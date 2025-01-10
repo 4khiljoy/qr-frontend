@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <form id="loginForm">
+        <h1><%= pageHeader %></h1>
+        <div class="input-container">
+            <i class="fas fa-user"></i>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required placeholder="Enter your username">
+        </div>
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+        <button type="submit">Login</button>
+        <div class="footer">
+            <p>Don't have an account? <a href="/create-account">Create one here</a></p>
+        </div>
+    </form>
+         <script defer>
+        async function loginUser(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+
+            const apiUrl = 'https://qr-backend-rjup.onrender.com/login'; // API endpoint
+            const credentials = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(credentials),
+                    // credentials: 'include' // Ensures cookies like the session are sent back by the browser.
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('Response received:', result);
+
+                if (result.loggedIn) {
+                    alert('Login successful!');
+                    // Redirect or update UI
+                    window.location.href = '/dashboard'; // Example redirect
+                } else {
+                    alert('Login failed. Please check your credentials.');
+                }
+            } catch (error) {
+                console.error('Error occurred during login:', error);
+            }
+        }
+        document.getElementById('loginForm').addEventListener('submit', loginUser);
+
+    </script>
+</body>
+</html>

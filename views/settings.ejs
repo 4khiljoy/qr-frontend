@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="settings">
+        <h1>Settings</h1>
+        <form id="settingsForm">
+            <label for="expiryTime">Maximum Allowed Time for Expiry (days):</label>
+            <input type="number" id="expiryTime" name="expiryTime" required>
+            <label for="voucherWidth">Voucher Width (mm):</label>
+            <input type="number" id="voucherWidth" name="voucherWidth" required>
+            <label for="voucherHeight">Voucher Height (mm):</label>
+            <input type="number" id="voucherHeight" name="voucherHeight" required>
+            <label for="titleFontSize">Title Font Size (px):</label>
+            <input type="number" id="titleFontSize" name="titleFontSize" required>
+            <label for="textFontSize">Text Font Size (px):</label>
+            <input type="number" id="textFontSize" name="textFontSize" required>
+            <button type="submit">Save Settings</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('settingsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const expiryTime = document.getElementById('expiryTime').value;
+            const voucherWidth = document.getElementById('voucherWidth').value;
+            const voucherHeight = document.getElementById('voucherHeight').value;
+            const titleFontSize = document.getElementById('titleFontSize').value;
+            const textFontSize = document.getElementById('textFontSize').value;
+
+            const settings = {
+                expiryTime,
+                voucherWidth,
+                voucherHeight,
+                titleFontSize,
+                textFontSize
+            };
+
+            localStorage.setItem('settings', JSON.stringify(settings));
+            alert('Settings saved successfully!');
+        });
+    </script>
+</body>
+</html>

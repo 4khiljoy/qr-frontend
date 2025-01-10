@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Dashboard</h1>
+        <div class="user-actions">
+            <button id="settingsBtn"><i class="fas fa-cog"></i></button>
+            <button id="profileBtn"><i class="fas fa-user"></i></button>
+            <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+        <button id="generateQrCodeBtn">Generate QR Code</button>
+        <canvas id="qrCodeCanvas" style="display: none;"></canvas>
+        <p id="successMessage"></p>
+        <ul id="voucherList">
+            </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        // Initialize an empty array to hold generated vouchers
+        let vouchers = [];
+
+        // Event listener for the Generate QR Code button
+        document.getElementById('generateQrCodeBtn').addEventListener('click', function() {
+            const randomNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString(); // Generate random number as voucher number
+            const generatedDate = new Date().toISOString();
+           const fetchData = async () => {
+            try {
+
+                await fetch('https://qr-backend-rjup.onrender.com/qrcode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ number: randomNumber, generated_date: generatedDate })
+            }).then(response => {
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+
+            }
+            catch (error) {
+                console.error('Error generating QR Code', error);
+                alert('An error occurred while generating your QR code. Please try again later.');
+            }
+           }
+           fetchData();
+            const qrCodeCanvas = document.getElementById('qrCodeCanvas');
+            const successMessageElement = document.getElementById('successMessage');
+
+            // Generate QR code using QRCode library and canvas element
+            QRCode.toCanvas(qrCodeCanvas, randomNumber, function(error) {
+                if (error) {
+                    console.error('Error generating QR Code', error);
+                } else {
+                    // Show the generated QR code in the canvas
+                    qrCodeCanvas.style.display = 'block';
+                    successMessageElement.innerText = 'QR Code generated successfully!';
+                    
+                    // Add the new voucher to the vouchers array
+                    const generatedDate = new Date().toISOString();
+                    const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days from now
+                    
+                    // Store the voucher data
+                    vouchers.push({ number: randomNumber, generatedDate, expiryDate, qrCode: qrCodeCanvas.toDataURL() });
+
+                    // Add this voucher to the list of vouchers on the page
+                    const voucherList = document.getElementById('voucherList');
+                    const newVoucherItem = document.createElement('li');
+                    newVoucherItem.innerHTML = `
+                        <p>Number: ${randomNumber}</p>
+                        <p>Generated Date: ${new Date(generatedDate).toLocaleDateString()}</p>
+                        <p>Expiry Date: ${new Date(expiryDate).toLocaleDateString()}</p>
+                        <img src="${qrCodeCanvas.toDataURL()}" alt="QR Code">
+                    `;
+                    voucherList.appendChild(newVoucherItem);
+                }
+            });
+        });
+
+        // Add event listener for logout button (implementation depends on your logout functionality)
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Redirect to login page, clear session data, etc.
+            console.log('Logout button clicked');
+        });
+
+        // Add event listener for settings button (implementation depends on your settings functionality)
+        document.getElementById('settingsBtn').addEventListener('click', function() {
+            // Open settings modal, profile page, etc.
+            console.log('Settings button clicked');
+        });
+    </script>
+</body>
+</html>

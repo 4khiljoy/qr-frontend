@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <form id="registerForm">
+        <h1><%= pageHeader %></h1>
+        <div class="input-container">
+            <i class="fas fa-user"></i>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required placeholder="Enter your username">
+        </div>
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter your password">
+        </div>
+        <button type="submit">Create Account</button>
+        <div class="footer">
+            <p>Already have an account? <a href="/login">Login here</a></p>
+        </div>
+    </form>
+    <script>
+        async function registerUser(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            const apiUrl = 'https://qr-backend-rjup.onrender.com/register'; // Backend API URL
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate password confirmation
+            if (password !== confirmPassword) {
+                alert("Passwords do not match. Please re-enter your passwords.");
+                return;
+            }
+
+            const payload = { username, password };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload),
+                    // credentials: 'include' // Ensures any session cookies are handled
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.text(); // Assuming the backend returns text for success
+                console.log('Response:', result);
+
+                if (result.includes('User Created Successfully')) {
+                    alert('Account created successfully! You can now log in.');
+                    window.location.href = '/login'; // Redirect to the login page
+                } else {
+                    alert('Failed to create account. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error occurred during registration:', error);
+                alert('An error occurred while creating your account. Please try again later.');
+            }
+        }
+
+        // Attach event listener to form submission
+        document.getElementById('registerForm').addEventListener('submit', registerUser);
+    </script>
+</body>
+</html>
+
