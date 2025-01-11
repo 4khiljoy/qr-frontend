@@ -15,15 +15,13 @@ model User {
   username String @unique
   password String
 
-  QrCode QrCode[]
 }
 
 model QrCode {
   id          String   @id @default(cuid())
-  number      Int
+  number      String
   generatedAt DateTime @default(now())
   expiredAt   DateTime
-  user        User     @relation(fields: [userId], references: [id])
   userId      String
 }
 

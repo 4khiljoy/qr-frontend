@@ -78,6 +78,15 @@ app.post('/login', async (req, res) => {
     
 });
 
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+        }
+        res.redirect('/login'); // Redirect to login page after logout
+    });
+})
+
 // Route to handle create account form submission
 app.post('/create-account', async(req, res) => {
     const { username, password } = req.body;
@@ -121,10 +130,22 @@ app.post('/api/vouchers', async (req, res) => {
     try {
         const qrCodeData = await QRCode.toDataURL(randomNumber);
         const generatedDate = new Date().toISOString();
+        console.log('QR Code generated successfully');
+        console.log('Generated Date:', generatedDate);
+
+        await prisma.qrCode.create({
+            data: {
+                number: randomNumber,
+                generatedAt: generatedDate,
+                userId: session.username,
+                expiredAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+            }
+        })
 
         const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days from now
         vouchers.push({ number: randomNumber, generatedDate, expiryDate });
-        res.status(201).json({ qrCode: qrCodeData, successMessage: "QR Code generated and saved successfully!" });
+        res.redirect('/dashboard');
+        // res.status(201).json({ qrCode: qrCodeData, successMessage: "QR Code generated and saved successfully!" });
     } catch (error) {
         console.error('Error generating QR Code', error);
         res.status(500).send("QR Code generation error");
@@ -132,8 +153,16 @@ app.post('/api/vouchers', async (req, res) => {
 });
 
 // API route to fetch vouchers
-app.get('/api/vouchers', (req, res) => {
-    res.json(vouchers);
+app.get('/api/vouchers', async (req, res) => {
+    await prisma.qrCode.findMany({
+        where: {
+            userId: req.session.username
+        }
+    }).then((vouchers) => {
+        console.log(vouchers);
+        res.json(vouchers);
+    })
+    // res.json(vouchers);
 });
 
 // Route to serve the React dashboard
