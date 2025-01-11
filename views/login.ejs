@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <form id="loginForm">
+    <form method="post" action="/login" >
         <h1><%= pageHeader %></h1>
         <div class="input-container">
             <i class="fas fa-user"></i>
@@ -26,46 +26,6 @@
             <p>Don't have an account? <a href="/create-account">Create one here</a></p>
         </div>
     </form>
-         <script defer>
-        async function loginUser(event) {
-            event.preventDefault(); // Prevent form from submitting normally
-
-            const apiUrl = 'https://qr-backend-rjup.onrender.com/login'; // API endpoint
-            const credentials = {
-                username: document.getElementById('username').value,
-                password: document.getElementById('password').value
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(credentials),
-                    credentials: 'same-origin' // Ensures cookies like the session are sent back by the browser.
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                console.log('Response received:', result);
-
-                if (result.loggedIn) {
-                    alert('Login successful!');
-                    // Redirect or update UI
-                    window.location.href = '/dashboard'; // Example redirect
-                } else {
-                    alert('Login failed. Please check your credentials.');
-                }
-            } catch (error) {
-                console.error('Error occurred during login:', error);
-            }
-        }
-        document.getElementById('loginForm').addEventListener('submit', loginUser);
-
-    </script>
+         
 </body>
 </html>

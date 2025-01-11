@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <form id="registerForm">
+    <form method="post" action="/create-account">
         <h1><%= pageHeader %></h1>
         <div class="input-container">
             <i class="fas fa-user"></i>
@@ -31,55 +31,7 @@
             <p>Already have an account? <a href="/login">Login here</a></p>
         </div>
     </form>
-    <script>
-        async function registerUser(event) {
-            event.preventDefault(); // Prevent the default form submission behavior
-
-            const apiUrl = 'https://qr-backend-rjup.onrender.com/register'; // Backend API URL
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // Validate password confirmation
-            if (password !== confirmPassword) {
-                alert("Passwords do not match. Please re-enter your passwords.");
-                return;
-            }
-
-            const payload = { username, password };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload),
-                    // credentials: 'include' // Ensures any session cookies are handled
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const result = await response.text(); // Assuming the backend returns text for success
-                console.log('Response:', result);
-
-                if (result.includes('User Created Successfully')) {
-                    alert('Account created successfully! You can now log in.');
-                    window.location.href = '/login'; // Redirect to the login page
-                } else {
-                    alert('Failed to create account. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error occurred during registration:', error);
-                alert('An error occurred while creating your account. Please try again later.');
-            }
-        }
-
-        // Attach event listener to form submission
-        document.getElementById('registerForm').addEventListener('submit', registerUser);
-    </script>
+    
 </body>
 </html>
 
