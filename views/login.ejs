@@ -43,7 +43,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(credentials),
-                    // credentials: 'include' // Ensures cookies like the session are sent back by the browser.
+                    credentials: 'same-origin' // Ensures cookies like the session are sent back by the browser.
                 });
 
                 if (!response.ok) {
