@@ -95,6 +95,8 @@ app.post('/create-account', async(req, res) => {
                     password: password,
                 }
             }).then(() => {
+                console.log('Account created successfully');
+                // alert('Account created successfully');
                 // res.render('create-account', { title: 'Create an Account', pageHeader: 'Create an Account', successMessage: 'Account created successfully' });
                 res.redirect('/login'); // Redirect to React dashboard after account creation
             }).catch((error) => {
