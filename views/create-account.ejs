@@ -26,11 +26,29 @@
             <label for="confirmPassword">Confirm Password:</label>
             <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter your password">
         </div>
-        <button type="submit">Create Account</button>
+        <button id="createAccountBtn" type="submit">Create Account</button>
         <div class="footer">
             <p>Already have an account? <a href="/login">Login here</a></p>
         </div>
     </form>
+
+    <script>
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return false;
+            }
+            return true;
+        }
+
+        document.getElementById('createAccountBtn').addEventListener('click', function(event) {
+            if (!validatePassword()) {
+                event.preventDefault();
+            }
+        })
+    </script>
     
 </body>
 </html>
