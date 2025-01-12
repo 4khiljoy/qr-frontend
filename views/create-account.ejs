@@ -48,7 +48,27 @@
                 event.preventDefault();
             }
         })
-    </script>
+    
+            const session = async () => {
+                 const res = await fetch('/session', {
+                     method: 'GET',
+                     headers: {
+                         'Content-Type': 'application/json'
+                     }
+                 })
+     
+                 const data = await res.json();
+                     console.log(data);
+                     if (data.isLoggedIn) {
+                         console.log('Logged in');
+                         window.location.href = '/dashboard';
+                     } else {
+                         console.log('Logged out');
+                     }
+                 
+             }
+             session();
+         </script>
     
 </body>
 </html>

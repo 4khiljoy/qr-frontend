@@ -26,6 +26,27 @@
             <p>Don't have an account? <a href="/create-account">Create one here</a></p>
         </div>
     </form>
+    <script>
+       const session = async () => {
+            const res = await fetch('/session', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const data = await res.json();
+                console.log(data);
+                if (data.isLoggedIn) {
+                    console.log('Logged in');
+                    window.location.href = '/dashboard';
+                } else {
+                    console.log('Logged out');
+                }
+            
+        }
+        session();
+    </script>
          
 </body>
 </html>

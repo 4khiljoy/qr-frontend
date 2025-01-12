@@ -62,5 +62,26 @@
             alert('Settings saved successfully!');
         });
     </script> -->
+    <script>
+          const session = async () => {
+            const res = await fetch('/session', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const data = await res.json();
+                console.log(data);
+                if (data.isLoggedIn) {
+                    console.log('Logged in');
+                } else {
+                    console.log('Logged out');
+                    window.location.href = '/login';
+                }
+            
+        }
+        session();
+    </script>
 </body>
 </html>

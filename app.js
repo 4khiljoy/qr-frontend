@@ -53,6 +53,21 @@ app.get('/settings', (req, res) => {
     res.render('settings', { title: 'Settings' });
 });
 
+app.get('/session', async (req, res) => {
+    const session = req.session;
+    console.log(session);
+    if (!session.isLoggedIn) {
+       res.json({
+           isLoggedIn: false
+       })
+    } else {
+        console.log('Logged in');
+        res.json({
+            isLoggedIn: true
+        });
+    }
+})
+
 // Route to handle login form submission
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -197,7 +212,7 @@ app.get('/api/vouchers', async (req, res) => {
             userId: req.session.username
         }
     }).then((vouchers) => {
-        console.log(vouchers);
+        // console.log(vouchers);
         res.json(vouchers);
     })
     // res.json(vouchers);
