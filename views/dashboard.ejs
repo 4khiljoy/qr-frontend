@@ -39,7 +39,7 @@
         // Function to generate PDF for each voucher
         let pdfDATA = [];
         const createVoucherPDF = (voucher, qrCanvas) => {
-            // console.log(pdfDATA);
+            console.log(pdfDATA);
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
             const pageWidth = pdf.internal.pageSize.getWidth();
@@ -47,13 +47,14 @@
 
             pdf.setFont("helvetica", "bold");
             const pdfFont = pdfDATA.length !== 0 ? pdfDATA.fsize : 19;
-            // console.log(pdfFont);
+            console.log(pdfFont);
             pdf.setFontSize(pdfFont);
             const title = pdfDATA.length !== 0 ? pdfDATA.title : "Voucher";
             pdf.text(title, centerX, 20, { align: "center" });
 
             pdf.setFont("helvetica", "normal");
-            const pdfFont1 = pdfDATA.length !== 0 ? pdfDATA.fsize : 12;
+            const pdfFont1 = pdfDATA.length !== 0 ? pdfDATA.nfsize : 12;
+            console.log(pdfFont1);
             pdf.setFontSize(pdfFont1);
             pdf.text(`Voucher Number: ${voucher.number}`, centerX, 40, { align: "center" });
             pdf.text(`Generated Date: ${voucher.generatedAt.split('T')[0]}`, centerX, 50, { align: "center" });
