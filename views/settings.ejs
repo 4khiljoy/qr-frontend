@@ -41,27 +41,6 @@
             <button type="submit">Save Settings</button>
         </form>
     </div>
-    <!-- <script>
-        document.getElementById('settingsForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const expiryTime = document.getElementById('expiryTime').value;
-            const voucherWidth = document.getElementById('voucherWidth').value;
-            const voucherHeight = document.getElementById('voucherHeight').value;
-            const titleFontSize = document.getElementById('titleFontSize').value;
-            const textFontSize = document.getElementById('textFontSize').value;
-
-            const settings = {
-                expiryTime,
-                voucherWidth,
-                voucherHeight,
-                titleFontSize,
-                textFontSize
-            };
-
-            localStorage.setItem('settings', JSON.stringify(settings));
-            alert('Settings saved successfully!');
-        });
-    </script> -->
     <script>
           const session = async () => {
             const res = await fetch('/session', {

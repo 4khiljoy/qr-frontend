@@ -38,38 +38,68 @@
     <script>
         // Function to generate PDF for each voucher
         let pdfDATA = [];
-        const createVoucherPDF = (voucher, qrCanvas) => {
-            console.log(pdfDATA);
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const centerX = pageWidth / 2;
+const createVoucherPDF = (voucher, qrCanvas) => {
+    console.log(pdfDATA);
 
-            pdf.setFont("helvetica", "bold");
-            const pdfFont = pdfDATA.length !== 0 ? pdfDATA.fsize : 19;
-            console.log(pdfFont);
-            pdf.setFontSize(pdfFont);
-            const title = pdfDATA.length !== 0 ? pdfDATA.title : "Voucher";
-            pdf.text(title, centerX, 20, { align: "center" });
+    // Initialize jsPDF
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-            pdf.setFont("helvetica", "normal");
-            const pdfFont1 = pdfDATA.length !== 0 ? pdfDATA.nfsize : 12;
-            console.log(pdfFont1);
-            pdf.setFontSize(pdfFont1);
-            pdf.text(`Voucher Number: ${voucher.number}`, centerX, 40, { align: "center" });
-            pdf.text(`Generated Date: ${voucher.generatedAt.split('T')[0]}`, centerX, 50, { align: "center" });
-            pdf.text(`Expiry Date: ${voucher.expiredAt.split('T')[0]}`, centerX, 60, { align: "center" });
+    // Simulate Gradient Background
+    const steps = 50; // Number of gradient steps
+    const skyBlue = { r: 135, g: 206, b: 235 }; // Start color (Sky Blue)
+    const lightGreen = { r: 144, g: 238, b: 144 }; // End color (Light Green)
 
-            const qrImageData = qrCanvas.toDataURL("image/png");
-            const qrWidth = pdfDATA.length !== 0 ? pdfDATA.vwidth : 100;
-            const qrHeight = pdfDATA.length !== 0 ? pdfDATA.vheight : 100;
-            pdf.addImage(qrImageData, "PNG", centerX - 50, 80, qrWidth, qrHeight);
+    for (let i = 0; i < steps; i++) {
+        const ratio = i / steps;
+        const r = Math.round(skyBlue.r * (1 - ratio) + lightGreen.r * ratio);
+        const g = Math.round(skyBlue.g * (1 - ratio) + lightGreen.g * ratio);
+        const b = Math.round(skyBlue.b * (1 - ratio) + lightGreen.b * ratio);
+        const color = `rgb(${r},${g},${b})`;
 
-            pdf.setFontSize(10);
-            pdf.text("Thank you for using our service!", centerX, pdf.internal.pageSize.height - 20, { align: "center" });
+        pdf.setFillColor(color);
+        pdf.rect(0, (pageHeight / steps) * i, pageWidth, pageHeight / steps, "F");
+    }
 
-            return pdf;
-        };
+    // Remaining code for adding content...
+    const centerX = pageWidth / 2;
+
+    // Title Section
+    pdf.setFont("helvetica", "bold");
+    const titleFontSize = pdfDATA?.nfsize || 19;
+    const titleText = pdfDATA?.title || "Voucher";
+    pdf.setTextColor("#333"); // Dark text for readability
+    pdf.setFontSize(titleFontSize);
+    pdf.text(titleText, centerX, 25, { align: "center" });
+
+    // Voucher Details Section
+    pdf.setFont("helvetica", "normal");
+    const detailsFontSize = pdfDATA?.fsize || 12;
+    pdf.setFontSize(detailsFontSize);
+    pdf.setTextColor("#555"); // Gray for detail text
+    pdf.text(`Voucher Number: ${voucher.number}`, centerX, 50, { align: "center" });
+    pdf.text(`Generated Date: ${voucher.generatedAt.split("T")[0]}`, centerX, 60, { align: "center" });
+    pdf.text(`Expiry Date: ${voucher.expiredAt.split("T")[0]}`, centerX, 70, { align: "center" });
+
+    // QR Code Section
+    const qrImageData = qrCanvas.toDataURL("image/png");
+    const qrWidth = pdfDATA?.vwidth || 100;
+    const qrHeight = pdfDATA?.vheight || 100;
+    pdf.addImage(qrImageData, "PNG", centerX - qrWidth / 2, 90, qrWidth, qrHeight);
+
+    // Footer Section
+    const footerText = "Thank you for using our service!";
+    pdf.setFont("helvetica", "italic");
+    pdf.setFontSize(10);
+    pdf.setTextColor("#333");
+    pdf.text(footerText, centerX, pageHeight - 15, { align: "center" });
+
+    console.log("PDF generated with simulated gradient background!");
+    return pdf;
+};
+
 
         const getDataFromApi = async () => {
             try {
@@ -215,3 +245,4 @@
     </script>
 </body>
 </html>
+
