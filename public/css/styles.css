@@ -1,4 +1,3 @@
-/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -10,14 +9,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    padding: 20px;
 }
 
-/* Typography */
 h1 {
     text-align: center;
     color: #222;
@@ -27,18 +26,6 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 2px;
 }
-
-/* Form and Containers */
-/* form, .settings {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 35px;
-    width: 100%;
-    max-width: 450px;
-    border-radius: 15px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(8px);
-    animation: fadeIn 0.8s ease-in-out;
-} */
 
 .form-custom, .settings {
     background-color: rgba(255, 255, 255, 0.95);
@@ -125,9 +112,17 @@ button:hover {
 .footer a:hover {
     text-decoration: underline;
 }
-
-/* Dashboard-Specific Styles */
-.dashboard {
+ .dashboard {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.8s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
 }
 
@@ -135,6 +130,7 @@ ul {
     list-style: none;
     padding: 0;
     margin-top: 20px;
+    width: 100%;
 }
 
 li {
@@ -143,6 +139,9 @@ li {
     background: rgba(255, 255, 255, 0.8);
     border-radius: 5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #qrCode {
@@ -150,12 +149,71 @@ li {
     display: none;
 }
 
+button {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ff8c00;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.downloadbtn{
+    width: 40%;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ff001e;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.downloadbtn:hover{
+    background-color:#d11013fa;
+}
+
+.printbtn{
+    width: 40%;
+    padding: 10px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #0f9edc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top:4px;
+    
+    
+}
+.printbtn:hover{
+    background-color: #225fe1;
+}
+
+
+
+button:hover {
+    background-color: #ff7a00;
+    transform: translateY(-2px);
+}
+
 .user-actions {
     position: absolute; 
-    top: 10px; /* Adjust top position as needed */
-    right: 20px; /* Adjust right position as needed */
+    top: 10px;
+    right: 20px; 
     display: flex;
     gap: 5px;
+}
+
+.user-actions button {
+    padding: 8px;
+    font-size: 14px;
 }
 
 #successMessage {
@@ -165,33 +223,32 @@ li {
     font-weight: bold;
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 /* Media Queries */
-@media (max-width: 768px) {
+ @media (max-width: 768px) {
     h1 {
         font-size: 2rem;
     }
 
-    form {
-        padding: 25px;
-        max-width: 90%;
+    .dashboard {
+        padding: 15px;
     }
 
-    input,
     button {
         font-size: 14px;
-        padding: 12px;
+        padding: 10px 15px;
+    }
+
+    li {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .user-actions {
+        top: 5px;
+        right: 10px;
+        flex-direction: column;
+        gap: 10px;
     }
 }
 
@@ -200,31 +257,76 @@ li {
         font-size: 1.8rem;
     }
 
-    form {
-        padding: 20px;
+    .dashboard {
+        padding: 10px;
     }
 
-    input,
     button {
-        padding: 10px;
-        font-size: 14px;
+        font-size: 12px;
+        margin-top: 5px;
+        padding: 8px 12px;
+      
+    }
+
+    li {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .user-actions {
+        top: 5px;
+        right: 5px;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
     }
 }
 
 @media (min-width: 1200px) {
     body {
-        padding: 20px;
+        padding: 30px;
     }
 
     h1 {
         font-size: 3rem;
     }
 
-    form {
-        max-width: 550px;
+    .dashboard {
+        padding: 25px;
     }
 
     button {
         font-size: 18px;
+        padding: 15px 20px;
+        margin-top: 2px;
+        
+    }
+   
+
+
+    li {
+        padding: 15px;
+        font-size: 16px;
+    }
+}
+/* Default state (for screens above 768px): Hide the toggle button */
+.user-actions .toggle-dropdown {
+    display: none;
+}
+
+/* Show toggle button and hide inline buttons on screens below 768px */
+@media (max-width: 768px) {
+    .user-actions .toggle-dropdown {
+        display: inline-block; /* Show the dropdown toggle button */
+        cursor: pointer;
+    }
+
+    .user-actions-buttons {
+        display: none; /* Hide the action buttons by default */
+        flex-direction: column;
+    }
+
+    .user-actions.show .user-actions-buttons {
+        display: flex; /* Show the buttons when the dropdown is toggled */
     }
 }

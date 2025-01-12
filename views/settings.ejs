@@ -9,6 +9,20 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+    <div class="user-actions">
+        <!-- Toggle button (appears below 768px) -->
+        <button class="toggle-dropdown"><i class="fas fa-bars"></i></button>
+    
+        <!-- User action buttons -->
+        <div class="user-actions-buttons">
+          <form action="/dashboard" method="get">
+            <button id="profileBtn"><i class="fas fa-user"></i> Dashboard</button>
+            </form>
+            <form action="/logout" method="post">
+                <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </form>
+        </div>
+    </div>
     <div class="settings">
         <h1>Settings</h1>
         <form id="settingsForm">
