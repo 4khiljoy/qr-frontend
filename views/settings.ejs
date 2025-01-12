@@ -25,7 +25,9 @@
     </div>
     <div class="settings">
         <h1>Settings</h1>
-        <form id="settingsForm">
+        <form id="settingsForm" method="post" action="/api/settings">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
             <label for="expiryTime">Maximum Allowed Time for Expiry (days):</label>
             <input type="number" id="expiryTime" name="expiryTime" required>
             <label for="voucherWidth">Voucher Width (mm):</label>
@@ -39,7 +41,7 @@
             <button type="submit">Save Settings</button>
         </form>
     </div>
-    <script>
+    <!-- <script>
         document.getElementById('settingsForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const expiryTime = document.getElementById('expiryTime').value;
@@ -59,6 +61,6 @@
             localStorage.setItem('settings', JSON.stringify(settings));
             alert('Settings saved successfully!');
         });
-    </script>
+    </script> -->
 </body>
 </html>

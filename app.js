@@ -132,17 +132,29 @@ app.post('/api/vouchers', async (req, res) => {
         const generatedDate = new Date().toISOString();
         console.log('QR Code generated successfully');
         console.log('Generated Date:', generatedDate);
+        let ExpDate  = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        const expDate = await prisma.pdf.findFirst({
+            where: {
+                id : "1"
+            }, 
+            select: {
+                expiredAt: true
+            }
+        })
+        if (expDate) {
+            ExpDate = expDate.expiredAt
+        }
 
         await prisma.qrCode.create({
             data: {
                 number: randomNumber,
                 generatedAt: generatedDate,
                 userId: session.username,
-                expiredAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+                expiredAt: ExpDate
             }
         })
 
-        const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days from now
+        const expiryDate = ExpDate.toISOString(); // 30 days from now
         vouchers.push({ number: randomNumber, generatedDate, expiryDate });
         res.redirect('/dashboard');
         // res.status(201).json({ qrCode: qrCodeData, successMessage: "QR Code generated and saved successfully!" });
@@ -151,7 +163,33 @@ app.post('/api/vouchers', async (req, res) => {
         res.status(500).send("QR Code generation error");
     }
 });
-
+app.post('/api/settings', async (req, res) => {
+    const { title,expiryTime, voucherWidth, voucherHeight, titleFontSize, textFontSize } = req.body;
+    console.log(title, expiryTime, voucherWidth, voucherHeight, titleFontSize, textFontSize);
+    await prisma.pdf.upsert({
+        where: {
+            id: "1"
+        },
+        update: {
+            expiredAt: new Date(Date.now() + expiryTime * 24 * 60 * 60 * 1000),
+            vwidth: parseInt(voucherWidth),
+            vheight: parseInt(voucherHeight),
+            nfsize: parseInt(titleFontSize),
+            fsize: parseInt(textFontSize),
+            title: title
+        },
+        create: {
+            id: "1",
+            expiredAt: new Date(Date.now() + expiryTime * 24 * 60 * 60 * 1000),
+            vwidth: parseInt(voucherWidth),
+            vheight: parseInt(voucherHeight),
+            nfsize: parseInt(titleFontSize),
+            fsize: parseInt(textFontSize),
+            title: title
+        }
+    })
+    res.redirect('/dashboard');
+})
 // API route to fetch vouchers
 app.get('/api/vouchers', async (req, res) => {
     await prisma.qrCode.findMany({
