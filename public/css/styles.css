@@ -27,7 +27,7 @@ h1 {
     letter-spacing: 2px;
 }
 
-.form-custom, .settings {
+.form-custom {
     background-color: rgba(255, 255, 255, 0.95);
     padding: 35px;
     width: 100%;
@@ -36,6 +36,15 @@ h1 {
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(8px);
     animation: fadeIn 0.8s ease-in-out;
+}
+
+#save:hover{
+    border-radius: 3px;
+    border: black 1px solid;
+}
+
+#save{
+    margin-top: 8px;
 }
 
 label {
@@ -214,6 +223,9 @@ button:hover {
 .user-actions button {
     padding: 8px;
     font-size: 14px;
+    margin-top: 5px;
+   
+    
 }
 
 #successMessage {

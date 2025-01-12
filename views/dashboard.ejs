@@ -146,19 +146,21 @@ const createVoucherPDF = (voucher, qrCanvas) => {
 
                     // Generate QR code
                     QRCode.toCanvas(qrCanvas, voucher.number, { width: 200, height: 200 }, (error) => {
-                        if (error) {
-                            console.error('Error generating QR code:', error);
-                        } else {
-                            // Display success message
-                            const successMessage = document.getElementById('successMessage');
-                            successMessage.textContent = `QR Code  generated successfully!`;
-                            successMessage.style.color = 'green';
+    if (error) {
+        console.error('Error generating QR code:', error);
+    } else {
+        // Display success message
+        const successMessage = document.getElementById('successMessage');
+        successMessage.textContent = `QR Code generated successfully!`;
+        successMessage.style.color = 'green';
 
-                        }  setTimeout(() => {
+        // Clear the message after 1 second
+        setTimeout(() => {
             successMessage.textContent = '';  // Clear message
-        },1000);  // Time in milliseconds (5000 ms = 5 seconds)
-    
-                    });
+        }, 1000);  // Time in milliseconds (1000 ms = 1 second)
+    }
+});
+
 
                     // Add download functionality
                     downloadBtn.addEventListener('click', () => {

@@ -7,8 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/styles.css">
+    
 </head>
 <body>
+   
+    
+        
     <div class="user-actions">
         <!-- Toggle button (appears below 768px) -->
         <button class="toggle-dropdown"><i class="fas fa-bars"></i></button>
@@ -23,6 +27,7 @@
             </form>
         </div>
     </div>
+    
     <div class="settings">
         <h1>Settings</h1>
         <form id="settingsForm" method="post" action="/api/settings">
@@ -38,10 +43,29 @@
             <input type="number" id="titleFontSize" name="titleFontSize" required>
             <label for="textFontSize">Text Font Size (px):</label>
             <input type="number" id="textFontSize" name="textFontSize" required>
-            <button type="submit">Save Settings</button>
+            <button type="submit" id="save">Save Settings</button>
         </form>
     </div>
     <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.querySelector('.toggle-dropdown');
+    const userActions = document.querySelector('.user-actions');
+
+    // Toggle the dropdown menu
+    toggleButton.addEventListener('click', () => {
+        userActions.classList.toggle('show');
+    });
+
+    // Close the dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!userActions.contains(event.target)) {
+            userActions.classList.remove('show');
+        }
+    });
+});
+
+
           const session = async () => {
             const res = await fetch('/session', {
                 method: 'GET',
@@ -61,6 +85,9 @@
             
         }
         session();
+
+        
+    
     </script>
 </body>
 </html>
