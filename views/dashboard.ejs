@@ -61,8 +61,8 @@
             pdf.text(`Expiry Date: ${voucher.expiredAt.split('T')[0]}`, centerX, 60, { align: "center" });
 
             const qrImageData = qrCanvas.toDataURL("image/png");
-            const qrWidth = pdfDATA.length !== 0 ? pdfDATA.qrsize : 100;
-            const qrHeight = pdfDATA.length !== 0 ? pdfDATA.qrsize : 100;
+            const qrWidth = pdfDATA.length !== 0 ? pdfDATA.vwidth : 100;
+            const qrHeight = pdfDATA.length !== 0 ? pdfDATA.vheight : 100;
             pdf.addImage(qrImageData, "PNG", centerX - 50, 80, qrWidth, qrHeight);
 
             pdf.setFontSize(10);
