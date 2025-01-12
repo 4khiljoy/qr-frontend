@@ -203,6 +203,18 @@ app.get('/api/vouchers', async (req, res) => {
     // res.json(vouchers);
 });
 
+app.get('/api/pdfsetting', async (req, res) => {
+    await prisma.pdf.findUnique({
+        where: {
+            id: "1"
+        }
+    }).then((vouchers) => {
+        console.log(vouchers);
+        res.json(vouchers);
+    })
+    // res.json(vouchers);
+});
+
 // Route to serve the React dashboard
 app.get('/dashboard/', (req, res) => {
     res.render('dashboard', { title: 'Dashboard' });

@@ -37,24 +37,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         // Function to generate PDF for each voucher
+        let pdfDATA = [];
         const createVoucherPDF = (voucher, qrCanvas) => {
+            // console.log(pdfDATA);
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
             const pageWidth = pdf.internal.pageSize.getWidth();
             const centerX = pageWidth / 2;
 
             pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(20);
-            pdf.text("Voucher Details", centerX, 20, { align: "center" });
+            const pdfFont = pdfDATA.length !== 0 ? pdfDATA.fsize : 19;
+            // console.log(pdfFont);
+            pdf.setFontSize(pdfFont);
+            const title = pdfDATA.length !== 0 ? pdfDATA.title : "Voucher";
+            pdf.text(title, centerX, 20, { align: "center" });
 
             pdf.setFont("helvetica", "normal");
-            pdf.setFontSize(12);
+            const pdfFont1 = pdfDATA.length !== 0 ? pdfDATA.fsize : 12;
+            pdf.setFontSize(pdfFont1);
             pdf.text(`Voucher Number: ${voucher.number}`, centerX, 40, { align: "center" });
             pdf.text(`Generated Date: ${voucher.generatedAt.split('T')[0]}`, centerX, 50, { align: "center" });
             pdf.text(`Expiry Date: ${voucher.expiredAt.split('T')[0]}`, centerX, 60, { align: "center" });
 
             const qrImageData = qrCanvas.toDataURL("image/png");
-            pdf.addImage(qrImageData, "PNG", centerX - 50, 80, 100, 100);
+            const qrWidth = pdfDATA.length !== 0 ? pdfDATA.qrsize : 100;
+            const qrHeight = pdfDATA.length !== 0 ? pdfDATA.qrsize : 100;
+            pdf.addImage(qrImageData, "PNG", centerX - 50, 80, qrWidth, qrHeight);
 
             pdf.setFontSize(10);
             pdf.text("Thank you for using our service!", centerX, pdf.internal.pageSize.height - 20, { align: "center" });
@@ -71,6 +79,15 @@
                     },
                 });
                 const data = await response.json();
+
+                const pffData = await fetch('/api/pdfsetting', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const pdfdata = await pffData.json();
+                pdfDATA = pdfdata;
 
                 const voucherList = document.getElementById('voucherList');
                 voucherList.innerHTML = ''; // Clear existing content
